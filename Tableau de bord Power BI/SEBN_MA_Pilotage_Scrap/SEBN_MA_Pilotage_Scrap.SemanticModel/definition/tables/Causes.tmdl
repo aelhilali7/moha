@@ -1,0 +1,153 @@
+table Causes
+	lineageTag: 328ff1e6-10c5-3a4b-3768-7992ccefc269
+
+	measure 'Valeur cause (€)' = SUM(Causes[ValeurEUR])
+		formatString: #,0 €
+		lineageTag: 917916cd-0946-ca1a-7a43-283f978c2a9f
+
+	measure 'Quantité cause' = SUM(Causes[Quantite])
+		formatString: #,0
+		lineageTag: 1636743d-3c8c-5fce-54e1-10e70f005d44
+
+	measure 'Part de la cause (%)' = DIVIDE([Valeur cause (€)], CALCULATE([Valeur cause (€)], ALL(Causes[Cause])))
+		formatString: 0.0 %
+		lineageTag: 165fb653-da09-d33d-1e74-835d381b7eb1
+
+	measure 'Cumul Pareto (%)' =
+			VAR _cur = [Valeur cause (€)]
+			VAR _tot = CALCULATE([Valeur cause (€)], ALL(Causes[Cause]))
+			VAR _cum =
+			    SUMX(
+			        FILTER(ALL(Causes[Cause]), CALCULATE([Valeur cause (€)]) >= _cur),
+			        CALCULATE([Valeur cause (€)])
+			    )
+			RETURN DIVIDE(_cum, _tot)
+		formatString: 0.0 %
+		lineageTag: b896cdea-f954-67ee-1684-58cda9629eee
+
+	column Cause
+		dataType: string
+		lineageTag: 5d3a8639-ccbc-e0ec-fbce-5e091a2b7439
+		summarizeBy: none
+		sourceColumn: Cause
+
+		annotation SummarizationSetBy = Automatic
+
+	column Semaine
+		dataType: string
+		lineageTag: e8f0962b-c85a-c76f-9c3c-476ede3a384e
+		summarizeBy: none
+		sourceColumn: Semaine
+		sortByColumn: SemaineNum
+
+		annotation SummarizationSetBy = Automatic
+
+	column SemaineNum
+		dataType: int64
+		formatString: 0
+		isHidden
+		lineageTag: c3c2147f-03f7-a235-42ab-774fc965314c
+		summarizeBy: none
+		sourceColumn: SemaineNum
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quantite
+		dataType: double
+		formatString: #,0
+		lineageTag: b2b5eaad-96ca-52e7-0248-0584362ec77a
+		summarizeBy: sum
+		sourceColumn: Quantite
+
+		annotation SummarizationSetBy = Automatic
+
+	column ValeurEUR
+		dataType: double
+		formatString: #,0 €
+		lineageTag: 1ddb4d33-8c54-da1d-1217-8d572886e214
+		summarizeBy: sum
+		sourceColumn: ValeurEUR
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Causes = m
+		mode: import
+		source =
+				let
+				    Source = #table(
+				    type table [Cause = text, Semaine = text, SemaineNum = Int64.Type, Quantite = number, ValeurEUR = number],
+				    {
+				        {"Défaut contact", "KW1", 1, 560, 5273},
+				        {"Défaut contact", "KW2", 2, 688, 6471},
+				        {"Défaut contact", "KW3", 3, 611, 5752},
+				        {"Défaut contact", "KW4", 4, 688, 6471},
+				        {"Réglage de la machine", "KW1", 1, 385, 3625},
+				        {"Réglage de la machine", "KW2", 2, 473, 4449},
+				        {"Réglage de la machine", "KW3", 3, 420, 3955},
+				        {"Réglage de la machine", "KW4", 4, 473, 4449},
+				        {"Défaut seal", "KW1", 1, 263, 2472},
+				        {"Défaut seal", "KW2", 2, 322, 3033},
+				        {"Défaut seal", "KW3", 3, 287, 2696},
+				        {"Défaut seal", "KW4", 4, 322, 3033},
+				        {"Défaut de longueur", "KW1", 1, 175, 1648},
+				        {"Défaut de longueur", "KW2", 2, 215, 2022},
+				        {"Défaut de longueur", "KW3", 3, 191, 1798},
+				        {"Défaut de longueur", "KW4", 4, 215, 2022},
+				        {"Soudage non OK", "KW1", 1, 88, 824},
+				        {"Soudage non OK", "KW2", 2, 107, 1011},
+				        {"Soudage non OK", "KW3", 3, 96, 899},
+				        {"Soudage non OK", "KW4", 4, 107, 1011},
+				        {"Test machine avec échantillon", "KW1", 1, 70, 659},
+				        {"Test machine avec échantillon", "KW2", 2, 86, 809},
+				        {"Test machine avec échantillon", "KW3", 3, 76, 719},
+				        {"Test machine avec échantillon", "KW4", 4, 86, 809},
+				        {"Inversion de torsadé", "KW1", 1, 53, 494},
+				        {"Inversion de torsadé", "KW2", 2, 64, 607},
+				        {"Inversion de torsadé", "KW3", 3, 57, 539},
+				        {"Inversion de torsadé", "KW4", 4, 64, 607},
+				        {"Bouclage de fil", "KW1", 1, 44, 412},
+				        {"Bouclage de fil", "KW2", 2, 54, 506},
+				        {"Bouclage de fil", "KW3", 3, 48, 449},
+				        {"Bouclage de fil", "KW4", 4, 54, 506},
+				        {"Test machine avec fil", "KW1", 1, 35, 330},
+				        {"Test machine avec fil", "KW2", 2, 43, 404},
+				        {"Test machine avec fil", "KW3", 3, 38, 360},
+				        {"Test machine avec fil", "KW4", 4, 43, 404},
+				        {"Défaut de fil", "KW1", 1, 26, 247},
+				        {"Défaut de fil", "KW2", 2, 32, 303},
+				        {"Défaut de fil", "KW3", 3, 29, 270},
+				        {"Défaut de fil", "KW4", 4, 32, 303},
+				        {"Inversion du soudage", "KW1", 1, 18, 165},
+				        {"Inversion du soudage", "KW2", 2, 21, 202},
+				        {"Inversion du soudage", "KW3", 3, 19, 180},
+				        {"Inversion du soudage", "KW4", 4, 21, 202},
+				        {"Test machine avec klip", "KW1", 1, 12, 115},
+				        {"Test machine avec klip", "KW2", 2, 15, 142},
+				        {"Test machine avec klip", "KW3", 3, 13, 126},
+				        {"Test machine avec klip", "KW4", 4, 15, 142},
+				        {"Différence quantité", "KW1", 1, 9, 82},
+				        {"Différence quantité", "KW2", 2, 11, 101},
+				        {"Différence quantité", "KW3", 3, 10, 90},
+				        {"Différence quantité", "KW4", 4, 11, 101},
+				        {"KFT endommagé", "KW1", 1, 5, 49},
+				        {"KFT endommagé", "KW2", 2, 6, 61},
+				        {"KFT endommagé", "KW3", 3, 6, 54},
+				        {"KFT endommagé", "KW4", 4, 6, 61},
+				        {"Validation des machines", "KW1", 1, 4, 33},
+				        {"Validation des machines", "KW2", 2, 4, 40},
+				        {"Validation des machines", "KW3", 3, 4, 36},
+				        {"Validation des machines", "KW4", 4, 4, 40},
+				        {"Défaut de marquage", "KW1", 1, 4, 33},
+				        {"Défaut de marquage", "KW2", 2, 4, 40},
+				        {"Défaut de marquage", "KW3", 3, 4, 36},
+				        {"Défaut de marquage", "KW4", 4, 4, 40},
+				        {"Défaut de test micrographe", "KW1", 1, 2, 16},
+				        {"Défaut de test micrographe", "KW2", 2, 2, 20},
+				        {"Défaut de test micrographe", "KW3", 3, 2, 18},
+				        {"Défaut de test micrographe", "KW4", 4, 2, 20}
+				    }
+				)
+				in
+				    Source
+
+	annotation PBI_ResultType = Table

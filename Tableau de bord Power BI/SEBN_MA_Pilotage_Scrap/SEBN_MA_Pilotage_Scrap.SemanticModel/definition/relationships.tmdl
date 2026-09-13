@@ -1,0 +1,8 @@
+relationship 7c92cf1e-ee8d-99cc-85f8-355a3d6e4b86
+	fromColumn: Projets.Famille
+	toColumn: Familles.Famille
+
+relationship d2791864-28a7-5016-b17e-4df5ea43d080
+	fromColumn: ZoneMois.Mois
+	toColumn: Mensuel.Mois
+

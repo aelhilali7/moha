@@ -1,0 +1,87 @@
+table AMDEC
+	lineageTag: ee382ddf-4f9e-57fa-03e0-07360d3b40fe
+
+	measure 'Criticité (G×F×D)' = SUM(AMDEC[Criticite])
+		formatString: #,0
+		lineageTag: 84cb4913-d41e-5661-1f9b-531c59795435
+
+	column Rang
+		dataType: int64
+		formatString: 0
+		lineageTag: b9370974-8a53-7b94-d1b4-def237d1127b
+		summarizeBy: none
+		sourceColumn: Rang
+
+		annotation SummarizationSetBy = Automatic
+
+	column Famille
+		dataType: string
+		lineageTag: dc1936ea-6fca-3ebe-72b2-7ad171dba98b
+		summarizeBy: none
+		sourceColumn: Famille
+
+		annotation SummarizationSetBy = Automatic
+
+	column Cause
+		dataType: string
+		lineageTag: 62379e04-0841-4947-50b3-5b43c70ac04a
+		summarizeBy: none
+		sourceColumn: Cause
+
+		annotation SummarizationSetBy = Automatic
+
+	column G
+		dataType: int64
+		formatString: 0
+		lineageTag: eace5c67-1201-0a98-b13a-bfdf3ac9cbf3
+		summarizeBy: none
+		sourceColumn: G
+
+		annotation SummarizationSetBy = Automatic
+
+	column F
+		dataType: int64
+		formatString: 0
+		lineageTag: fe66f99f-b9a9-d8a3-8622-51f973267490
+		summarizeBy: none
+		sourceColumn: F
+
+		annotation SummarizationSetBy = Automatic
+
+	column D
+		dataType: int64
+		formatString: 0
+		lineageTag: 5bc74fa1-f1f0-a51b-404c-43e8eb7a9699
+		summarizeBy: none
+		sourceColumn: D
+
+		annotation SummarizationSetBy = Automatic
+
+	column Criticite
+		dataType: int64
+		formatString: 0
+		lineageTag: 54af4d1e-0f97-3e60-3c6d-3b36c8f40993
+		summarizeBy: none
+		sourceColumn: Criticite
+
+		annotation SummarizationSetBy = Automatic
+
+	partition AMDEC = m
+		mode: import
+		source =
+				let
+				    Source = #table(
+				    type table [Rang = Int64.Type, Famille = text, Cause = text, G = Int64.Type, F = Int64.Type, D = Int64.Type, Criticite = Int64.Type],
+				    {
+				        {1, "Méthode", "Absence de standardisation des réglages (sertissage)", 8, 9, 7, 504},
+				        {2, "Milieu / Machine", "Réglages instables, maintenance préventive insuffisante", 7, 7, 6, 294},
+				        {3, "Mesure", "Scrap de validation non distingué du scrap de défaut", 5, 7, 8, 280},
+				        {4, "Matière", "Variabilité des bobines (section, alliage)", 7, 6, 6, 252},
+				        {4, "Management", "Absence de remontée des écarts vers la production", 6, 6, 7, 252},
+				        {6, "Main-d'œuvre", "Formation insuffisante lors des changements de série", 6, 8, 5, 240}
+				    }
+				)
+				in
+				    Source
+
+	annotation PBI_ResultType = Table

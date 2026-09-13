@@ -1,0 +1,107 @@
+table Familles
+	lineageTag: d2695de2-bcf4-d07e-c37c-6879c6d3ad8d
+
+	measure 'Taux cible (%)' = MAX(Familles[TauxCible])
+		formatString: 0.0 %
+		lineageTag: c8f78e92-d1a5-af0e-4fbe-a2a9e8a467f4
+
+	measure 'Majoration totale (%)' = MAX(Familles[MajorationTotale])
+		formatString: 0.0 %
+		lineageTag: a9037150-53ee-6513-3f7a-8b4ad9617d95
+
+	column Famille
+		dataType: string
+		lineageTag: 60614dc6-d620-0979-b1cf-fa58441af415
+		summarizeBy: none
+		sourceColumn: Famille
+
+		annotation SummarizationSetBy = Automatic
+
+	column TauxStructurel
+		dataType: double
+		formatString: 0.0 %
+		lineageTag: fdf47d60-fe8c-200a-5e77-12969d675d47
+		summarizeBy: none
+		sourceColumn: TauxStructurel
+
+		annotation SummarizationSetBy = Automatic
+
+	column TauxOperationnel
+		dataType: double
+		formatString: 0.0 %
+		lineageTag: b68a4e2d-82c7-81e8-a825-0a1af7218f23
+		summarizeBy: none
+		sourceColumn: TauxOperationnel
+
+		annotation SummarizationSetBy = Automatic
+
+	column TauxTest
+		dataType: double
+		formatString: 0.0 %
+		lineageTag: 58a66ed6-20dc-cba4-0de9-9b0120536f7c
+		summarizeBy: none
+		sourceColumn: TauxTest
+
+		annotation SummarizationSetBy = Automatic
+
+	column TauxCible
+		dataType: double
+		formatString: 0.0 %
+		lineageTag: af41de84-ba20-fe42-687e-da3749423b3b
+		summarizeBy: none
+		sourceColumn: TauxCible
+
+		annotation SummarizationSetBy = Automatic
+
+	column MajMOD
+		dataType: double
+		formatString: 0.0 %
+		lineageTag: f5ab42df-13c4-c6fe-40f9-b075c77733fc
+		summarizeBy: none
+		sourceColumn: MajMOD
+
+		annotation SummarizationSetBy = Automatic
+
+	column MajComposants
+		dataType: double
+		formatString: 0.0 %
+		lineageTag: a0ef5b37-130f-86a6-0fab-497fcce5860f
+		summarizeBy: none
+		sourceColumn: MajComposants
+
+		annotation SummarizationSetBy = Automatic
+
+	column MajCharges
+		dataType: double
+		formatString: 0.0 %
+		lineageTag: ff0abfe3-6f03-04d6-db45-14e3eb84df17
+		summarizeBy: none
+		sourceColumn: MajCharges
+
+		annotation SummarizationSetBy = Automatic
+
+	column MajorationTotale
+		dataType: double
+		formatString: 0.0 %
+		lineageTag: 1c4079bc-ca6c-db09-a436-f173f66dc90a
+		summarizeBy: none
+		sourceColumn: MajorationTotale
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Familles = m
+		mode: import
+		source =
+				let
+				    Source = #table(
+				    type table [Famille = text, TauxStructurel = Percentage.Type, TauxOperationnel = Percentage.Type, TauxTest = Percentage.Type, TauxCible = Percentage.Type, MajMOD = Percentage.Type, MajComposants = Percentage.Type, MajCharges = Percentage.Type, MajorationTotale = Percentage.Type],
+				    {
+				        {"Standard", 0.04, 0.08, 0.02, 0.14, 0.12, 0.08, 0.08, 0.28},
+				        {"Intermédiaire", 0.04, 0.1, 0.02, 0.16, 0.14, 0.15, 0.09, 0.38},
+				        {"HV / Batterie", 0.04, 0.12, 0.02, 0.18, 0.16, 0.26, 0.1, 0.52}
+				    }
+				)
+				in
+				    Source
+
+	annotation PBI_ResultType = Table

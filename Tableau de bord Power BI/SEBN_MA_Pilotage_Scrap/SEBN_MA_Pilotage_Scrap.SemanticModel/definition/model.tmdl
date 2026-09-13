@@ -1,0 +1,22 @@
+model Model
+	culture: fr-FR
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: fr-FR
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 0
+
+annotation PBI_QueryOrder = ["Mensuel", "ZoneMois", "ZonesKg", "Causes", "AMDEC", "Familles", "Projets"]
+
+ref table Mensuel
+ref table ZoneMois
+ref table ZonesKg
+ref table Causes
+ref table AMDEC
+ref table Familles
+ref table Projets
+
+ref cultureInfo fr-FR
+

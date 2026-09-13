@@ -1,0 +1,188 @@
+table Projets
+	lineageTag: 8df4b679-3e01-fdeb-ef79-4c2fb9ac2fff
+
+	measure 'Coût matière (€)' = SUM(Projets[CoutMatiere])
+		formatString: #,0 €
+		lineageTag: 107b1e48-f2ec-3a38-e38c-7e8f907bf42b
+
+	measure 'Coût complet (€)' = SUM(Projets[CoutComplet])
+		formatString: #,0 €
+		lineageTag: 223c99f2-545a-8c9d-5750-8832198fe2e6
+
+	measure 'MOD (€)' = SUM(Projets[MOD])
+		formatString: #,0 €
+		lineageTag: efd13305-0782-9f82-be3a-cc15ced71bc2
+
+	measure 'Composants non filaires (€)' = SUM(Projets[Composants])
+		formatString: #,0 €
+		lineageTag: 79d89cbf-7e7b-2d77-b918-7e1d2c60cc48
+
+	measure 'Charges indirectes (€)' = SUM(Projets[ChargesInd])
+		formatString: #,0 €
+		lineageTag: 71de7765-fa58-77f6-8929-d5fd76b60901
+
+	measure 'Majoration coût complet (%)' = DIVIDE([Coût complet (€)] - [Coût matière (€)], [Coût matière (€)])
+		formatString: 0.0 %
+		lineageTag: b221cb5d-253e-c4e1-7be3-2fa772390de0
+
+	measure 'Budget cible (€)' = SUM(Projets[BudgetCible])
+		formatString: #,0 €
+		lineageTag: eab6bad3-725c-0657-abde-54ecf866e4e7
+
+	measure 'Écart vs budget cible (%)' = DIVIDE([Coût matière (€)] - [Budget cible (€)], [Budget cible (€)])
+		formatString: 0.0 %
+		lineageTag: 1fab246a-ad48-1718-a748-8080d32b2f39
+
+	measure 'Écart vs budget cible (€)' = [Coût matière (€)] - [Budget cible (€)]
+		formatString: #,0 €
+		lineageTag: 43e97f47-4289-668e-72e9-8bacb25c4721
+
+	measure 'Consommation matière (€)' = SUM(Projets[ConsoEUR])
+		formatString: #,0 €
+		lineageTag: ebee299f-9c20-9e5d-ddd6-681800e48616
+
+	measure 'Taux réel observé (%)' = DIVIDE([Coût matière (€)], [Consommation matière (€)])
+		formatString: 0.0 %
+		lineageTag: c6845316-8607-c74e-4a41-c08a19396158
+
+	measure 'Coût complet cible (€)' = SUMX(Projets, Projets[BudgetCible] * (1 + RELATED(Familles[MajorationTotale])))
+		formatString: #,0 €
+		lineageTag: 9fb8444f-20ac-c801-4657-6aad1173ca9f
+
+	measure 'Économie potentielle (€)' = [Coût complet (€)] - [Coût complet cible (€)]
+		formatString: #,0 €
+		lineageTag: fc9dcf37-f196-b43d-9960-6ad8ac910b16
+
+	measure 'Économie potentielle (%)' = DIVIDE([Économie potentielle (€)], [Coût complet (€)])
+		formatString: 0.0 %
+		lineageTag: 69562214-49f6-6164-c103-c7b9e0c9700a
+
+	measure 'Part du coût complet (%)' = DIVIDE([Coût complet (€)], CALCULATE([Coût complet (€)], ALL(Projets)))
+		formatString: 0.0 %
+		lineageTag: b9929b04-1106-1a3f-e10c-7d16d1883558
+
+	measure 'Taux cible pondéré (%)' = DIVIDE([Budget cible (€)], [Consommation matière (€)])
+		formatString: 0.0 %
+		lineageTag: 39bc34ba-34ec-85c0-063d-a018e121f4b5
+
+	measure 'Économie annualisée (€)' = [Économie potentielle (€)] * 12 / 5
+		formatString: #,0 €
+		lineageTag: a31fe745-9d38-ce6f-c6e6-ef3087547da2
+
+	column Projet
+		dataType: string
+		lineageTag: 3f6cec49-c441-67e9-7667-095a9babca70
+		summarizeBy: none
+		sourceColumn: Projet
+
+		annotation SummarizationSetBy = Automatic
+
+	column Famille
+		dataType: string
+		lineageTag: dd8dcd7a-0198-9923-b34c-c7e303ceef61
+		summarizeBy: none
+		sourceColumn: Famille
+
+		annotation SummarizationSetBy = Automatic
+
+	column ConsoEUR
+		dataType: double
+		formatString: #,0 €
+		lineageTag: 17823d80-9bb7-a770-37e2-ca0153e7f24a
+		summarizeBy: sum
+		sourceColumn: ConsoEUR
+
+		annotation SummarizationSetBy = Automatic
+
+	column TauxScrap
+		dataType: double
+		formatString: 0.0 %
+		lineageTag: 929add00-e31c-58ae-a27a-9f5b91b4428f
+		summarizeBy: none
+		sourceColumn: TauxScrap
+
+		annotation SummarizationSetBy = Automatic
+
+	column CoutMatiere
+		dataType: double
+		formatString: #,0 €
+		lineageTag: a76b9617-4509-39d4-8284-8c9826566474
+		summarizeBy: sum
+		sourceColumn: CoutMatiere
+
+		annotation SummarizationSetBy = Automatic
+
+	column MOD
+		dataType: double
+		formatString: #,0 €
+		lineageTag: e22c175b-1967-b3ae-bc6f-d9cb4952c36e
+		summarizeBy: sum
+		sourceColumn: MOD
+
+		annotation SummarizationSetBy = Automatic
+
+	column Composants
+		dataType: double
+		formatString: #,0 €
+		lineageTag: 12b6ae02-8da5-8cb8-03fa-75d3207fdbb5
+		summarizeBy: sum
+		sourceColumn: Composants
+
+		annotation SummarizationSetBy = Automatic
+
+	column ChargesInd
+		dataType: double
+		formatString: #,0 €
+		lineageTag: e9120016-ad19-70b2-5d3b-6a2175208f35
+		summarizeBy: sum
+		sourceColumn: ChargesInd
+
+		annotation SummarizationSetBy = Automatic
+
+	column CoutComplet
+		dataType: double
+		formatString: #,0 €
+		lineageTag: c9b73c16-8ae3-2f63-f6af-3e015620ed37
+		summarizeBy: sum
+		sourceColumn: CoutComplet
+
+		annotation SummarizationSetBy = Automatic
+
+	column BudgetCible
+		dataType: double
+		formatString: #,0 €
+		lineageTag: cc1c8a9b-3e14-1506-1673-973c50fdcaf2
+		summarizeBy: sum
+		sourceColumn: BudgetCible
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Projets = m
+		mode: import
+		source =
+				let
+				    Source = #table(
+				    type table [Projet = text, Famille = text, ConsoEUR = number, TauxScrap = Percentage.Type, CoutMatiere = number, MOD = number, Composants = number, ChargesInd = number, CoutComplet = number, BudgetCible = number],
+				    {
+				        {"KSK Golf Inra", "Standard", 316221, 0.14, 44271, 5313, 3542, 3542, 56667, 44271},
+				        {"KSK Golf Mora", "Standard", 213662, 0.148, 31622, 3795, 2530, 2530, 40476, 29913},
+				        {"T-ROC Cabrio INRA", "Standard", 183613, 0.155, 28460, 3415, 2277, 2277, 36429, 25706},
+				        {"KSK Q7/Q9 Inra", "Intermédiaire", 155012, 0.17, 26352, 3689, 3953, 2372, 36366, 24802},
+				        {"Autarke MEB21 HV", "HV / Batterie", 110429, 0.21, 23190, 3710, 6029, 2319, 35249, 19877},
+				        {"Porsche Macan", "Intermédiaire", 128200, 0.185, 23717, 3320, 3558, 2135, 32729, 20512},
+				        {"Q7 HV", "HV / Batterie", 102839, 0.205, 21082, 3373, 5481, 2108, 32045, 18511},
+				        {"T-ROC Cabrio MORA", "Standard", 146401, 0.162, 23717, 2846, 1897, 1897, 30358, 20496},
+				        {"KSK Q7/Q9 Cockpit", "Intermédiaire", 123371, 0.178, 21960, 3074, 3294, 1976, 30305, 19739},
+				        {"MEB 31 (Battery)", "HV / Batterie", 86241, 0.22, 18973, 3036, 4933, 1897, 28839, 15523},
+				        {"HV Bentley", "HV / Batterie", 60233, 0.245, 14757, 2361, 3837, 1476, 22431, 10842},
+				        {"HV MQB HEV", "HV / Batterie", 68637, 0.215, 14757, 2361, 3837, 1476, 22431, 12355},
+				        {"Autarke T-Roc Cabrio", "Standard", 115947, 0.15, 17392, 2087, 1391, 1391, 22262, 16233},
+				        {"Porsche Panamera G3", "Intermédiaire", 82349, 0.192, 15811, 2214, 2372, 1423, 21819, 13176},
+				        {"Autarke MEB21 HV (ALU)", "HV / Batterie", 53826, 0.235, 12649, 2024, 3289, 1265, 19226, 9689},
+				        {"Audi BrakeLight", "Standard", 101192, 0.125, 12649, 1518, 1012, 1012, 16191, 14167}
+				    }
+				)
+				in
+				    Source
+
+	annotation PBI_ResultType = Table

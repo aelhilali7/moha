@@ -1,0 +1,183 @@
+table Mensuel
+	lineageTag: a1a11d14-1d07-85de-03eb-58ba9e2ce8b8
+
+	measure 'Scrap réel (€)' = SUM(Mensuel[ScrapEUR])
+		formatString: #,0 €
+		lineageTag: 16756c22-0579-3e92-2878-1996c79c7dd0
+
+	measure 'Budget scrap 3 % (€)' = SUM(Mensuel[BudgetEUR])
+		formatString: #,0 €
+		lineageTag: f2dd1ca2-b13f-ef32-a177-c907757c3a4a
+
+	measure 'Écart réel vs budget (€)' = [Scrap réel (€)] - [Budget scrap 3 % (€)]
+		formatString: #,0 €
+		lineageTag: 3e37acf8-c26a-e336-7365-4d0ab4219799
+
+	measure 'Écart réel vs budget (%)' = DIVIDE([Scrap réel (€)] - [Budget scrap 3 % (€)], [Budget scrap 3 % (€)])
+		formatString: 0.0 %
+		lineageTag: c9754815-4e85-af25-8f8b-b14bbe1e8e85
+
+	measure 'Scrap (kg)' = SUM(Mensuel[ScrapKg])
+		formatString: #,0 "kg"
+		lineageTag: 2ec7b572-f5a6-68f1-6474-c0632e77ea9f
+
+	measure 'Consommation bobines (kg)' = SUM(Mensuel[ConsoKg])
+		formatString: #,0 "kg"
+		lineageTag: 5db0b8ce-c0cc-a476-c451-b7733ff5eb59
+
+	measure 'Consommation bobines (€)' = SUM(Mensuel[ConsoEUR])
+		formatString: #,0 €
+		lineageTag: 7ea50983-9a4f-0db8-d01c-66792b8bb2b4
+
+	measure 'Taux de scrap matière (%)' = DIVIDE([Scrap réel (€)], [Consommation bobines (€)])
+		formatString: 0.0 %
+		lineageTag: 3be74afc-79bc-8f08-b012-102b382796a2
+
+	measure 'Coût unitaire moyen (€/kg)' = DIVIDE([Consommation bobines (€)], [Consommation bobines (kg)])
+		formatString: #,0.00 €
+		lineageTag: bfdcb3c9-cc9c-60b4-3a8f-4bd214a48677
+
+	measure 'KMH réel' = SUM(Mensuel[KMHReel])
+		formatString: #,0
+		lineageTag: eb1cae99-b032-4bf1-7b98-4a89008a10be
+
+	measure 'KMH budget' = SUM(Mensuel[BudgetKMH])
+		formatString: #,0
+		lineageTag: c34c144b-4f15-4279-5fa8-c1f2ce2ff06c
+
+	measure 'Écart KMH (%)' = DIVIDE([KMH réel] - [KMH budget], [KMH budget])
+		formatString: 0.0 %
+		lineageTag: 59a7da8c-7ff7-75c1-28af-50e30d90adaf
+
+	measure 'Scrap (T€) / KMH réel' = DIVIDE([Scrap réel (€)] / 1000, [KMH réel])
+		formatString: 0.00 %
+		lineageTag: 337e079b-22b3-2524-e05b-b6c91332f8b3
+
+	measure 'Scrap (T€) / KMH forecast' = DIVIDE([Budget scrap 3 % (€)] / 1000, [KMH budget])
+		formatString: 0.00 %
+		lineageTag: 45f62dd4-5e1f-9463-c323-714ee5ef45bb
+
+	measure 'Coût complet estimé (€)' = SUM(Mensuel[CoutComplet])
+		formatString: #,0 €
+		lineageTag: c76c5581-dede-f4ea-e54e-5f8b8dc3d81d
+
+	measure 'Nombre de mois' = COUNTROWS(Mensuel)
+		formatString: 0
+		lineageTag: 916bfbf0-4c5d-f083-ddab-074bcb3e3543
+
+	column Mois
+		dataType: string
+		lineageTag: ba61a773-bd9c-2bcc-ecf7-de634c92b0b1
+		summarizeBy: none
+		sourceColumn: Mois
+		sortByColumn: MoisNum
+
+		annotation SummarizationSetBy = Automatic
+
+	column MoisNum
+		dataType: int64
+		formatString: 0
+		isHidden
+		lineageTag: 9710938a-b73a-56c7-1ff3-74a5970b7725
+		summarizeBy: none
+		sourceColumn: MoisNum
+
+		annotation SummarizationSetBy = Automatic
+
+	column BudgetEUR
+		dataType: double
+		formatString: #,0 €
+		lineageTag: 635e5ccc-17ee-3c9d-4033-f59fa733d14f
+		summarizeBy: sum
+		sourceColumn: BudgetEUR
+
+		annotation SummarizationSetBy = Automatic
+
+	column BudgetKMH
+		dataType: double
+		lineageTag: fedd1508-f4dd-38d9-fe6a-2bcfd32dcf22
+		summarizeBy: sum
+		sourceColumn: BudgetKMH
+
+		annotation SummarizationSetBy = Automatic
+
+	column KMHReel
+		dataType: double
+		lineageTag: 1e59cf68-3d0c-c699-8602-33635d997cc2
+		summarizeBy: sum
+		sourceColumn: KMHReel
+
+		annotation SummarizationSetBy = Automatic
+
+	column ConsoKg
+		dataType: double
+		formatString: #,0
+		lineageTag: 008fa6b2-dced-ee7b-006a-69e9797f67fb
+		summarizeBy: sum
+		sourceColumn: ConsoKg
+
+		annotation SummarizationSetBy = Automatic
+
+	column ConsoEUR
+		dataType: double
+		formatString: #,0 €
+		lineageTag: 63a7b307-2e56-2585-e89c-ccfbba0e996b
+		summarizeBy: sum
+		sourceColumn: ConsoEUR
+
+		annotation SummarizationSetBy = Automatic
+
+	column ScrapKg
+		dataType: double
+		formatString: #,0
+		lineageTag: 0f1f8b41-d2ec-af1a-0bf6-762913aa35ab
+		summarizeBy: sum
+		sourceColumn: ScrapKg
+
+		annotation SummarizationSetBy = Automatic
+
+	column ScrapEUR
+		dataType: double
+		formatString: #,0 €
+		lineageTag: c0f01d2a-d2f8-2849-c4a0-4267d24c9db6
+		summarizeBy: sum
+		sourceColumn: ScrapEUR
+
+		annotation SummarizationSetBy = Automatic
+
+	column CoutUnitaire
+		dataType: double
+		formatString: #,0.00 €
+		lineageTag: 929518e9-6ba3-cc45-2d5b-905ace4ac59c
+		summarizeBy: sum
+		sourceColumn: CoutUnitaire
+
+		annotation SummarizationSetBy = Automatic
+
+	column CoutComplet
+		dataType: double
+		formatString: #,0 €
+		lineageTag: 6258540c-ef53-f1ec-de4b-04ab16b43eb7
+		summarizeBy: sum
+		sourceColumn: CoutComplet
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Mensuel = m
+		mode: import
+		source =
+				let
+				    Source = #table(
+				    type table [Mois = text, MoisNum = Int64.Type, BudgetEUR = number, BudgetKMH = number, KMHReel = number, ConsoKg = number, ConsoEUR = number, ScrapKg = number, ScrapEUR = number, CoutUnitaire = number, CoutComplet = number],
+				    {
+				        {"Janvier", 1, 30432, 290, 308, 37900.5, 313437.14, 6064, 50149, 8.27, 65703},
+				        {"Février", 2, 52512, 382, 426, 45200.0, 424880.0, 7430, 69850, 9.4, 91512},
+				        {"Mars", 3, 54882, 387, 441, 46800.0, 440388.0, 7960, 74900, 9.41, 98128},
+				        {"Avril", 4, 57732, 399, 459, 48100.0, 459836.0, 8610, 82300, 9.56, 107815},
+				        {"Mai", 5, 52371, 357, 487, 49500.0, 488070.0, 9340, 92100, 9.86, 120663}
+				    }
+				)
+				in
+				    Source
+
+	annotation PBI_ResultType = Table

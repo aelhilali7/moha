@@ -1,0 +1,149 @@
+table ZoneMois
+	lineageTag: 2ed64db2-63ae-9d4d-964b-7f3f7406db04
+
+	measure 'Valeur scrap zone (€)' = SUM(ZoneMois[ValeurEUR])
+		formatString: #,0 €
+		lineageTag: 5ee87f1d-5cf9-24eb-a783-dff8eed1723c
+
+	measure 'Part de la zone (%)' = DIVIDE([Valeur scrap zone (€)], CALCULATE([Valeur scrap zone (€)], ALL(ZoneMois[Zone])))
+		formatString: 0.0 %
+		lineageTag: c1edbac5-386f-8730-4a91-e9fb58f26f74
+
+	measure 'Nombre de zones actives' = CALCULATE(DISTINCTCOUNT(ZoneMois[Zone]), ZoneMois[ValeurEUR] > 0)
+		formatString: 0
+		lineageTag: 7f0a3c18-92be-7376-5d6f-2c1cce023034
+
+	column Zone
+		dataType: string
+		lineageTag: 8d74740d-8aa1-dd85-8a76-4f6e94e8688d
+		summarizeBy: none
+		sourceColumn: Zone
+
+		annotation SummarizationSetBy = Automatic
+
+	column Mois
+		dataType: string
+		lineageTag: 573d4cf8-fb36-cb68-8c20-53572260c77b
+		summarizeBy: none
+		sourceColumn: Mois
+		sortByColumn: MoisNum
+
+		annotation SummarizationSetBy = Automatic
+
+	column MoisNum
+		dataType: int64
+		formatString: 0
+		isHidden
+		lineageTag: 54686170-10f0-115b-661b-c0e80f07498c
+		summarizeBy: none
+		sourceColumn: MoisNum
+
+		annotation SummarizationSetBy = Automatic
+
+	column ValeurEUR
+		dataType: double
+		formatString: #,0 €
+		lineageTag: b5bfe972-dedb-a9f7-54ba-9b333d323138
+		summarizeBy: sum
+		sourceColumn: ValeurEUR
+
+		annotation SummarizationSetBy = Automatic
+
+	partition ZoneMois = m
+		mode: import
+		source =
+				let
+				    Source = #table(
+				    type table [Zone = text, Mois = text, MoisNum = Int64.Type, ValeurEUR = number],
+				    {
+				        {"20", "Janvier", 1, 8741},
+				        {"20", "Février", 2, 9370},
+				        {"20", "Mars", 3, 10145},
+				        {"20", "Avril", 4, 10997},
+				        {"20", "Mai", 5, 11821},
+				        {"40", "Janvier", 1, 9353},
+				        {"40", "Février", 2, 9279},
+				        {"40", "Mars", 3, 10070},
+				        {"40", "Avril", 4, 11236},
+				        {"40", "Mai", 5, 13576},
+				        {"Bande de contact", "Janvier", 1, 9759},
+				        {"Bande de contact", "Février", 2, 11931},
+				        {"Bande de contact", "Mars", 3, 12189},
+				        {"Bande de contact", "Avril", 4, 11922},
+				        {"Bande de contact", "Mai", 5, 14711},
+				        {"Code 14", "Janvier", 1, 7997},
+				        {"Code 14", "Février", 2, 10984},
+				        {"Code 14", "Mars", 3, 11678},
+				        {"Code 14", "Avril", 4, 12380},
+				        {"Code 14", "Mai", 5, 14921},
+				        {"Déchet contact", "Janvier", 1, 5160},
+				        {"Déchet contact", "Février", 2, 3295},
+				        {"Déchet contact", "Mars", 3, 3440},
+				        {"Déchet contact", "Avril", 4, 3926},
+				        {"Déchet contact", "Mai", 5, 4584},
+				        {"Formation G-Star", "Janvier", 1, 0},
+				        {"Formation G-Star", "Février", 2, 0},
+				        {"Formation G-Star", "Mars", 3, 0},
+				        {"Formation G-Star", "Avril", 4, 0},
+				        {"Formation G-Star", "Mai", 5, 0},
+				        {"Golf 08", "Janvier", 1, 1017},
+				        {"Golf 08", "Février", 2, 970},
+				        {"Golf 08", "Mars", 3, 1116},
+				        {"Golf 08", "Avril", 4, 1353},
+				        {"Golf 08", "Mai", 5, 943},
+				        {"Micrographe", "Janvier", 1, 0},
+				        {"Micrographe", "Février", 2, 0},
+				        {"Micrographe", "Mars", 3, 0},
+				        {"Micrographe", "Avril", 4, 0},
+				        {"Micrographe", "Mai", 5, 0},
+				        {"Réparation interne", "Janvier", 1, 0},
+				        {"Réparation interne", "Février", 2, 0},
+				        {"Réparation interne", "Mars", 3, 0},
+				        {"Réparation interne", "Avril", 4, 0},
+				        {"Réparation interne", "Mai", 5, 0},
+				        {"Small", "Janvier", 1, 2895},
+				        {"Small", "Février", 2, 864},
+				        {"Small", "Mars", 3, 905},
+				        {"Small", "Avril", 4, 1210},
+				        {"Small", "Mai", 5, 978},
+				        {"SQC", "Janvier", 1, 8915},
+				        {"SQC", "Février", 2, 9522},
+				        {"SQC", "Mars", 3, 10409},
+				        {"SQC", "Avril", 4, 11369},
+				        {"SQC", "Mai", 5, 12092},
+				        {"Test 20", "Janvier", 1, 5053},
+				        {"Test 20", "Février", 2, 4007},
+				        {"Test 20", "Mars", 3, 4307},
+				        {"Test 20", "Avril", 4, 4651},
+				        {"Test 20", "Mai", 5, 5212},
+				        {"Test 40", "Janvier", 1, 5301},
+				        {"Test 40", "Février", 2, 3878},
+				        {"Test 40", "Mars", 3, 4337},
+				        {"Test 40", "Avril", 4, 4603},
+				        {"Test 40", "Mai", 5, 5989},
+				        {"Test Golf 08", "Janvier", 1, 455},
+				        {"Test Golf 08", "Février", 2, 523},
+				        {"Test Golf 08", "Mars", 3, 437},
+				        {"Test Golf 08", "Avril", 4, 562},
+				        {"Test Golf 08", "Mai", 5, 297},
+				        {"Test T-Roc", "Janvier", 1, 116},
+				        {"Test T-Roc", "Février", 2, 864},
+				        {"Test T-Roc", "Mars", 3, 769},
+				        {"Test T-Roc", "Avril", 4, 791},
+				        {"Test T-Roc", "Mai", 5, 707},
+				        {"T-ROC", "Janvier", 1, 281},
+				        {"T-ROC", "Février", 2, 3674},
+				        {"T-ROC", "Mars", 3, 4397},
+				        {"T-ROC", "Avril", 4, 6480},
+				        {"T-ROC", "Mai", 5, 5352},
+				        {"Validation code 13", "Janvier", 1, 2861},
+				        {"Validation code 13", "Février", 2, 689},
+				        {"Validation code 13", "Mars", 3, 701},
+				        {"Validation code 13", "Avril", 4, 820},
+				        {"Validation code 13", "Mai", 5, 917}
+				    }
+				)
+				in
+				    Source
+
+	annotation PBI_ResultType = Table

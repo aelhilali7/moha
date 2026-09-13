@@ -1,0 +1,58 @@
+table ZonesKg
+	lineageTag: cef4147a-e83d-7390-245e-16cc0d554167
+
+	measure 'Scrap janvier (kg)' = SUM(ZonesKg[KgJanvier])
+		formatString: #,0 "kg"
+		lineageTag: 7967e35e-8611-25e4-b43f-2710fccef986
+
+	measure 'Part de la zone en kg (%)' = DIVIDE([Scrap janvier (kg)], CALCULATE([Scrap janvier (kg)], ALL(ZonesKg[Zone])))
+		formatString: 0.0 %
+		lineageTag: f56033bb-cf98-7cb7-5bf0-0bc54c788446
+
+	column Zone
+		dataType: string
+		lineageTag: 2c9e06a5-f1b6-9bf5-0459-d9bf75bd18e6
+		summarizeBy: none
+		sourceColumn: Zone
+
+		annotation SummarizationSetBy = Automatic
+
+	column KgJanvier
+		dataType: double
+		formatString: #,0
+		lineageTag: 171a0f67-a064-20e9-e689-689581847278
+		summarizeBy: sum
+		sourceColumn: KgJanvier
+
+		annotation SummarizationSetBy = Automatic
+
+	partition ZonesKg = m
+		mode: import
+		source =
+				let
+				    Source = #table(
+				    type table [Zone = text, KgJanvier = number],
+				    {
+				        {"Bande de contact", 1180},
+				        {"40", 1131},
+				        {"SQC", 1078},
+				        {"20", 1057},
+				        {"Code 14", 967},
+				        {"Test 40", 641},
+				        {"Déchet contact", 624},
+				        {"Test 20", 611},
+				        {"Small", 350},
+				        {"Validation code 13", 346},
+				        {"Golf 08", 123},
+				        {"Test Golf 08", 55},
+				        {"T-ROC", 34},
+				        {"Test T-Roc", 14},
+				        {"Formation G-Star", 0},
+				        {"Micrographe", 0},
+				        {"Réparation interne", 0}
+				    }
+				)
+				in
+				    Source
+
+	annotation PBI_ResultType = Table

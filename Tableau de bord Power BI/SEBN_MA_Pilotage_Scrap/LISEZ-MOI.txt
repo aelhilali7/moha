@@ -1,0 +1,12 @@
+SEBN-MA – Tableau de bord de pilotage du scrap (projet Power BI)
+
+1. Copier le dossier complet « SEBN_MA_Pilotage_Scrap » sur le PC équipé de Power BI Desktop (version 2025 ou plus récente).
+2. Double-cliquer sur « SEBN_MA_Pilotage_Scrap.pbip » (ou Fichier > Ouvrir dans Power BI Desktop).
+   Si Power BI signale que le format PBIP/TMDL doit être activé : Fichier > Options > Fonctionnalités en préversion,
+   cocher « Enregistrer au format de projet Power BI » et « Format TMDL », puis rouvrir.
+3. Cliquer sur « Actualiser » (ruban Accueil) : les données, intégrées dans le modèle, se chargent en quelques secondes.
+4. Fichier > Enregistrer sous > choisir « .pbix » pour obtenir le fichier Power BI classique.
+
+Contenu : 3 pages (Pilotage mensuel ; Zones et causes ; Coût complet et projets), 7 tables de données
+issues des tableaux 11, 13, 14, 15, 18, 19, 20, 21, 22, 23, 25 et des figures 25 à 27 du mémoire, 40 mesures DAX.
+Toutes les valeurs sont celles du mémoire (données fictives, janvier–mai).
